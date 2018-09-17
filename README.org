@@ -1,0 +1,38 @@
+* Learn Teach Code, Code Challenges
+  Repository for problems and collected solutions from the Learn Teach Code #code-challenge slack channel.
+
+  Join the [[https://learnteachcode.herokuapp.com/][Learn Teach Code Slack]] #code-challenge channel to get started. Check out the [[and check out the meetup pagehttps://www.meetup.com/LearnTeachCodehttps://www.meetup.com/LearnTeachCode][Meetup page]] too.
+
+** How to post a solution
+   Post your solution in a way that _doesn't spoil_ for others. Options:
+
+   1. As a gist/codepen/repl.it/external link
+   2. As a slack code snippet with 5 blank lines in header (Slack
+      folds these automatically)
+   3. As a pull request into the =solutions= directory of this repo
+
+** Guidelines
+   - Use *any language*. Part of the fun is seeing different implementations. But if you want guidance, the community is javascript-oriented, so you might start there.
+
+   - We welcome people at *all levels of skill.* The challenges are designed to be _doable for beginners within reasonable time_, and we want you to participate. The only criterion is time to attempt a solution.
+
+   - The challenges are designed to be flexible enough to give beginner and experienced programmers alike something to chew on. Sharing lots of different approaches and weighing alternatives is the whole point.
+
+   - Healthy discussion of solutions is encouraged. Of course, *be respectful.* People are sharing their work.
+
+   - Ask questions! We aren't trying to be tricky, and a benefit of doing challenges in this venue is that we can talk things through. If the prompt isn't clear, or if you need a push in the right direction, feel free to ask. If you get stuck, post a partial solution and ask for help.
+
+
+** Challenge List
+*** [[file:01_chessboard.org][chessboard]]
+    [2018-07-20 Fri]
+*** [[file:02_zip.org][zip]]
+    [2018-08-17 Fri]
+*** [[file:03_pairs.org][pair up]]
+    [2019-09-07 Sat]
+*** [[file:04_flat.org][flatten]] =[[1, 2], 3, 4] -> [1, 2, 3, 4]=
+    <2018-09-17 Mon>
+
+** License
+
+The contents of this repository are licensed under [[file:LICENSE][Creative Commons Attribution + Share-alike]]

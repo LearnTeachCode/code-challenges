@@ -1,0 +1,19 @@
+Most of the solutions that people posted are lost to the sands of time (Slack history)
+
+** @jyamad
+
+#+begin_src js
+// slice from pre-generated string
+function make_board4(width, height) {
+    const chars = ' #'.repeat(width / 2 + 1);
+    const odd_row = chars.slice(0, width) + '\n';
+    const even_row = chars.slice(1, width + 1) + '\n';
+
+    let rows = [];
+    for (let i = 0; i < height; i += 2)
+        rows.push(odd_row, even_row);
+    return rows.slice(0, height).join('');
+}
+#+end_src
+
+- Large family of variations https://github.com/yamad/js/blob/master/chessboard.js

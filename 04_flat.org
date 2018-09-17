@@ -1,0 +1,23 @@
+* 04. =flatten=
+
+  Implement =flatten=, a function that removes (flattens out) nested structure.
+
+  Examples:
+
+  : [1, 2, [3, 4]]   --> [1, 2, 3, 4]
+  : [[1, 2], [3, 4]] --> [1, 2, 3, 4]
+
+  Use any language and data structure/representation that makes sense. Go for the basic behavior first, but see bonus implementation notes for ideas.
+
+** Bonus implementation ideas:
+   These are of varying difficulty. Depending on your experience/skill, try some of these variants.
+
+   1. Handle arbitrarily deep nesting (e.g. =[[[[1], [2, 3]]]] -> [1, 2, 3]=)
+   2. Allow an extra argument that sets the number of levels to flatten
+   3. Support any combination of iterables as input
+   4. Implement a unit test suite
+   5. Write a version with no loop constructs
+   6. Write a version in a pure functional style
+   7. Write a version with no recursive calls
+   8. Write a version you'd deploy into production. Explain your choices for the production version.
+   9. Implement a property-based testing suite (using e.g. jsverify)

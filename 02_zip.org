@@ -1,0 +1,11 @@
+* zip
+  Write =zip=: a function that iterates over two arrays/iterables at the same time.
+
+  : zip([1, 2], [3, 4]) --> [[1, 3], [2, 4]]
+
+  Consider corner cases. Handle more than two arrays if possible. input/output format is up to you.
+
+  If you need, check docs on the zip functions in, say, lodash or python or Haskell for the desired behavior.
+
+** What is the desired behavior when one array is longer than the other?
+   You choose (and ideally justify the design decision). One option: in python, it stops on the shortest and another function =zip_longest= does the opposite.

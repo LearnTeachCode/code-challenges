@@ -1,0 +1,30 @@
+# 03. Pair Up
+
+#+AUTHOR: @solomon (Solomon Bothwell)
+
+Given the following object:
+
+#+begin_src js
+const options = {
+  YouTube: ['Saved'],
+  AppleMusic: ['Saved', 'Played', 'Skipped'],
+  Spotify: ['Saved', 'Played'],
+  Napster: ['Saved', 'Skipped']
+}
+#+end_src
+
+Write a function that returns the product of each key with each element of its list.
+
+The end result should look like:
+#+begin_src js
+const result = [
+  ['Youtube', 'Saved'],
+  ['AppleMusic', 'Saved'],
+  ['AppleMusic', 'Played'],
+  ['AppleMusic', 'Skipped'],
+  ['Spotify', 'Saved'],
+  ['Spotify', 'Played'],
+  ['Napster', 'Saved'],
+  ['Napster', 'Skipped'],
+]
+#+end_src

@@ -1,0 +1,16 @@
+* chessboard
+  Write a "chessboard" generator =chessboard(width, height)=
+
+  Example output:
+
+#+begin_src js
+> console.log(chessboard(4,4))
+ # #
+# #
+ # #
+# #
+#+end_src
+
+** Notes
+   - inspired by a snippet posted in #javascript
+   - we make no claim of originality
