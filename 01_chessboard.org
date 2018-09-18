@@ -11,6 +11,8 @@
 # #
 #+end_src
 
+[[file:solutions/01_chessboard.org][Solutions]]
+
 ** Notes
    - inspired by a snippet posted in #javascript
    - we make no claim of originality

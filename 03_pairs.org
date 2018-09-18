@@ -1,4 +1,4 @@
-# 03. Pair Up
+* Pair Up
 
 #+AUTHOR: @solomon (Solomon Bothwell)
 

@@ -1,5 +1,4 @@
-* 04. =flatten=
-
+* flatten
   Implement =flatten=, a function that removes (flattens out) nested structure.
 
   Examples:

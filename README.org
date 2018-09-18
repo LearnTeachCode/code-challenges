@@ -24,15 +24,12 @@
 
 
 ** Challenge List
-*** [[file:01_chessboard.org][chessboard]]
-    [2018-07-20 Fri]
-*** [[file:02_zip.org][zip]]
-    [2018-08-17 Fri]
-*** [[file:03_pairs.org][pair up]]
-    [2019-09-07 Sat]
-*** [[file:04_flat.org][flatten]]
-    <2018-09-17 Mon>
+
+| > | [[file:04_flat.org][flatten]]    |           | <2018-09-17 Mon> |
+| 3 | [[file:03_pairs.org][pair up]]    |           | [2018-09-07 Fri] |
+| 2 | [[file:02_zip.org][zip]]        |           | [2018-08-17 Fri] |
+| 1 | [[file:01_chessboard.org][chessboard]] | [[file:solutions/01_chessboard.org][solutions]] | [2018-07-20 Fri] |
 
 ** License
 
-The contents of this repository are licensed under [[file:LICENSE][Creative Commons Attribution + Share-alike]]
+The contents of this repository are licensed under the [[file:LICENSE][Creative Commons Attribution + Share-alike]] license

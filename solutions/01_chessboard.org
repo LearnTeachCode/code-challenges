@@ -1,4 +1,5 @@
-Most of the solutions that people posted are lost to the sands of time (Slack history)
+* Solutions for [[file:~/src/ltc/01_chessboard.org][chessboard]]
+  Most of the solutions that people posted are lost to the sands of time (Slack history)
 
 ** @jyamad
 
