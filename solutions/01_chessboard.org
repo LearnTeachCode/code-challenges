@@ -1,8 +1,4 @@
-* Problem
-
-#+INCLUDE: "../01_chessboard.org"
-
-* Solutions for [[file:../01_chessboard.org][chessboard]]
+* Solutions for chessboard
   Most of the solutions that people posted are lost to the sands of time (Slack history)
 
 ** @jyamad

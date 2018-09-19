@@ -6,9 +6,9 @@
 ** How to post a solution
    Post your solution in a way that /doesn't spoil/ for others. Options:
 
-   1. As a gist/codepen/repl.it/external link
-   2. As a slack code snippet with 5 blank lines in header (Slack
-      folds these automatically)
+   1. (*Preferred*) As a slack code snippet with 5 blank lines in
+      header (Slack folds these automatically)
+   2. As a gist/codepen/repl.it/external link
    3. As a pull request into the =solutions= directory of this repo
 
 ** Guidelines
@@ -25,10 +25,12 @@
 
 ** Challenge List
 
-| > | [[file:04_flat.org][flatten]]    |           | <2018-09-17 Mon> |
-| 3 | [[file:03_pairs.org][pair up]]    |           | [2018-09-07 Fri] |
-| 2 | [[file:02_zip.org][zip]]        |           | [2018-08-17 Fri] |
-| 1 | [[file:01_chessboard.org][chessboard]] | [[file:solutions/01_chessboard.org][solutions]] | [2018-07-20 Fri] |
+| *>* | [[file:04_flat.org][flatten]]    |           | <2018-09-19 Wed> |
+|   3 | [[file:03_pairs.org][pair up]]    |           | [2018-09-07 Fri] |
+|   2 | [[file:02_zip.org][zip]]        |           | [2018-08-17 Fri] |
+|   1 | [[file:01_chessboard.org][chessboard]] | [[file:solutions/01_chessboard.org][solutions]] | [2018-07-20 Fri] |
+
+*>* current challenge
 
 ** License
 
