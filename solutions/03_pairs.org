@@ -57,7 +57,8 @@ more explanatory names (and as a generator expression)
 #+begin_src js
 flattenPairs(options)
 
-function flattenPairs(obj) {const pairs = ([k, vs]) => vs.map(v => [k,v])
+function flattenPairs(obj) {
+    const pairs = ([k, vs]) => vs.map(v => [k,v])
     return [].concat(...Object.entries(obj).map(pairs))
 }
 #+end_src
