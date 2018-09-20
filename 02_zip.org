@@ -7,5 +7,7 @@
 
   If you need, check docs on the zip functions in, say, lodash or python or Haskell for the desired behavior.
 
+  [[file:solutions/02_zip.org][Solutions]]
+
 ** What is the desired behavior when one array is longer than the other?
    You choose (and ideally justify the design decision). One option: in python, it stops on the shortest and another function =zip_longest= does the opposite.

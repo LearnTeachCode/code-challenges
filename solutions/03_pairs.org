@@ -1,0 +1,91 @@
+* Solutions for pairs
+** @cyborg_ean
+   Decided to do a prototypal solution, just for the heck of it.
+
+#+begin_src js
+const options = {
+  YouTube: ['Saved'],
+  AppleMusic: ['Saved', 'Played', 'Skipped'],
+  Spotify: ['Saved', 'Played'],
+  Napster: ['Saved', 'Skipped']
+}
+
+Object.prototype.pairMap = function(){
+    const result = [];
+    const list   = Object.keys(this);
+    list.forEach((x) => {
+        this[x].forEach((pair) => {
+            result.push([x, pair]);
+        })
+    });
+
+    return result
+}
+
+const result = options.pairMap();
+console.log(result);
+#+end_src
+
+** @sibiar600
+
+https://repl.it/@JamesPascual/ltcjs-challenge-pair-options
+
+** @lou
+
+#+begin_src python
+result = [(kv[0], el) for kv in options.iteritems() for el in kv[1]]
+#+end_src
+
+** @jyamad
+
+*** python
+
+#+begin_src python
+[(k,x) for k,xs in options.items() for x in xs]
+#+end_src
+
+more explanatory names (and as a generator expression)
+
+#+begin_src python
+((key, action)
+  for key, actions in options.items()
+  for action in actions)
+#+end_src
+
+*** javascript
+
+#+begin_src js
+flattenPairs(options)
+
+function flattenPairs(obj) {const pairs = ([k, vs]) => vs.map(v => [k,v])
+    return [].concat(...Object.entries(obj).map(pairs))
+}
+#+end_src
+
+#+begin_src js
+Object.keys(options)
+     .map(key => options[key]
+          .map(action => [key, action]))
+     .reduce((acc, a) => [...acc, ...a])
+#+end_src
+
+*** Haskell
+
+The first line here is unnecessary, but acts as documentation:
+
+#+begin_src haskell
+flattenPairs :: [(a, [b])] -> [(a, b)]
+flattenPairs xs = [(a, b) | (a, bs) <- xs, b <- bs]
+#+end_src
+
+More obscure Haskell:
+
+#+begin_src haskell
+flattenPairs2 = foldMap $ \(a, bs) -> (,) a <$> bs
+#+end_src
+
+#+begin_src haskell
+{-# LANGUAGE: TupleSections #-}
+flattenPairs3 = foldMap pairs
+  where pairs (t, bs) = fmap (t,) bs
+#+end_src

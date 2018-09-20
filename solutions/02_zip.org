@@ -1,0 +1,170 @@
+* Solutions for zip
+
+** @solomon
+
+#+begin_src haskell
+zip :: [a] -> [b] -> [(a, b)]
+zip [] _ = []
+zip _ [] = []
+zip (x:xs) (y:ys) = (x, y) : zip xs ys
+#+end_src
+
+#+begin_src js
+const zip = (a, b) => {
+  if (a.length === 0 || b.length === 0) {
+    return [];
+  }
+  const [x, ...xs] = a;
+  const [y, ...ys] = b;
+  return [[x,y]].concat(zip(xs,ys));
+}
+#+end_src
+
+#+begin_src js
+const zipWith = (f, a, b) => {
+  if (a.length === 0 || b.length === 0) {
+    return [];
+  }
+  const [x, ...xs] = a;
+  const [y, ...ys] = b;
+  return [f(x,y)].concat(zipWith(f, xs,ys));
+}
+
+const add = (a, b) => a+b;
+
+zipWith(add, [1,2,3,4], [1,2,3,4])
+#+end_src
+
+** @andrew
+
+#+begin_src ruby
+def zip(*args)
+  results = []
+  length = args.map{ |itr| itr.size }.min || 0
+  length.times do |i|
+      results.push(args.map{ |itr| itr[i] })
+  end
+  results
+end
+#+end_src
+
+#+begin_src ruby
+def zip(*args)
+  results = Array.new( args.map{ |itr| itr.size }.min || 0 )
+  results.each_with_index do |_, i|
+      results[i] = args.map { |itr| itr[i] }
+  end
+end
+#+end_src
+
+#+begin_src js
+function zip(first_itr) {
+  if (first_itr === undefined) throw new Error("Must pass in at least one iterable");
+  const results = [];
+  const remaining = Array.from(arguments).slice(1);
+  const length = Math.min(first_itr.length, ...remaining.map((itr) => itr.length))
+  for(let i = 0; i < length; i++) {
+    const sub_result = []
+    sub_result.push(first_itr[i]);
+    remaining.forEach((itr) => sub_result.push(itr[i]))
+    results.push(sub_result);
+  }
+  return results
+}
+#+end_src
+
+** @sibiar600
+
+#+begin_src js
+const zip = (arr1, arr2) => {
+  const zipped = [];
+  const shorterArr = (arr1.length <= arr2.length) ? arr1 : arr2;
+  while (shorterArr.length) {
+    zipped.push([ arr1.shift(), arr2.shift() ]);
+  }
+  return zipped;
+};
+#+end_src
+
+Handles more than 2 arrays:
+
+#+begin_src js
+const zip = function() {
+  const arrs = [...arguments];
+  if (!arrs.length) return [];
+  const zipped = [];
+  const shortestArr = arrs.reduce(
+      (accumulator, currentValue) => (currentValue.length < accumulator.length) ? currentValue : accumulator
+  );
+  while (shortestArr.length) {
+    zipped.push(arrs.map(arr => arr.shift()));
+  }
+  return zipped;
+};
+#+end_src
+
+https://codepen.io/sibiar600/pen/PBMyjW?editors=0011
+
+** @jyamad
+
+#+begin_src js
+// basic zip as generator
+// assumes all inputs are arrays
+function* zip_gen(...arrs) {
+	if (arrs.length === 0) return;
+	const minlen = Math.min(...arrs.map(a => a.length));
+	for (let i = 0; i < minlen; i++)
+		yield arrs.map(a => a[i]);
+}
+
+// return results as array
+function zip(...arrs) {
+	return [...zip_gen(...arrs)]
+}
+#+end_src
+
+#+begin_src js
+// zip generator, takes any iterable
+function* zip_iterables(...iterables) {
+	if (iterables.length === 0) return;
+	const iters = iterables.map(a => a[Symbol.iterator]());
+	while (true) {
+		const nexts = iters.map(a => a.next());
+		const dones = nexts.map(a => a.done);
+		if (dones.some(d => d === true))
+			return;
+		yield nexts.map(a => a.value)
+	}
+}
+#+end_src
+
+#+begin_src js
+// zip n iterables
+// looping by recursive tail call
+function zip_ntc(...args) {
+	function zip_iter(iters, acc) {
+		if (iters.some(x => x.length === 0))
+			return acc;
+
+		const heads = iters.map(x => x[0]);
+		const rests = iters.map(x => x.slice(1));
+		return zip_iter(rests, [...acc, heads]);
+	}
+
+	if (args.length === 0) return [];
+	return zip_iter(args, []);
+}
+#+end_src
+
+- See https://github.com/yamad/js/blob/master/zip.js and a property-based test suite https://github.com/yamad/js/blob/master/zip_test.js
+
+#+begin_src python
+def my_zip(*args):
+    """full workalike for built-in zip"""
+    iters = [iter(a) for a in args]
+    while True:
+        try:
+            yield tuple([next(a) for a in iters])
+        except StopIteration:
+            return
+#+end_src
