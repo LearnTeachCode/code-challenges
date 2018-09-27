@@ -1,0 +1,84 @@
+
+** @sibiar600
+
+https://repl.it/@JamesPascual/ltccode-challenges-04flat
+
+#+begin_src js
+const { compose, is } = require('ramda')
+
+const flatten = compose(
+  function _flatten(arr) {
+    return arr.reduce(
+      (flattened, value) => flattened
+        .concat(isIterable(value)
+          ? iterableToArray(value)
+          : value),
+      []
+    )
+  },
+  iterableToArray
+)
+
+const flattenDeep = compose(
+  function _flattenDeep(arr) {
+    return arr.reduce(
+      (flattened, value) => flattened
+        .concat(typeof value === 'string'
+          ? value
+          : isIterable(value)
+            ? flattenDeep(value)
+            : value),
+      []
+    )
+  },
+  iterableToArray
+)
+
+function flattenDepth(iterable, depth = 1) {
+  const arr = isIterable(iterable) ? iterableToArray(iterable) : iterable
+
+  if (depth < 1) return arr
+
+  return arr
+    .reduce((flattened, value) => {
+      value = is(Map, value) ? Array.from(value.values()) : value
+
+      return isIterable(value)
+        ? flattened.concat(flattenDepth(value, depth - 1))
+        : flattened.concat(value)
+    },
+      [])
+}
+
+function flattenDepth_v2(iterable, depth = 1) {
+  const arr = isIterable(iterable) ? iterableToArray(iterable) : iterable
+
+  if (depth < 1) return arr
+
+  let flattened = []
+
+  for (let value of arr) {
+    flattened = flattened.concat(
+      isIterable(value)
+        ? flattenDepth_v2(value, depth - 1)
+        : value
+    )
+  }
+
+  return flattened
+}
+
+function isIterable(object) {
+  return object !== undefined
+    && object !== null
+    && typeof object[Symbol.iterator] === 'function'
+}
+
+function iterableToArray(iterable) {
+  return Array.from(
+    is(Map, iterable)
+      ? iterable.values()
+      : iterable
+  )
+}
+#+end_src
