@@ -18,3 +18,22 @@ function make_board4(width, height) {
 #+end_src
 
 - Large family of variations https://github.com/yamad/js/blob/master/chessboard.js
+
+** @sibiar600
+
+https://repl.it/@JamesPascual/ltccode-challenges-04flat
+
+#+begin_src js
+const drawRow = (pattern, maxLength, { lineEnding = '\n' } = {}) => pattern
+    .repeat( Math.ceil(maxLength / pattern.length) )
+    .slice(0, maxLength) + lineEnding;
+    
+
+const drawBoard = (width, height, { oddPattern = '# ', evenPattern = ' #', lineEnding = '\n' } = {}) => {
+    let board = '';
+    for (let y = 0; y < height; y++) {
+        board += (y % 2) ? drawRow(oddPattern, width, { lineEnding }) : drawRow(evenPattern, width, { lineEnding });
+    }
+    return board;
+};
+#+end_src
