@@ -21,7 +21,7 @@ function make_board4(width, height) {
 
 ** @sibiar600
 
-https://repl.it/@JamesPascual/ltccode-challenges-04flat
+https://repl.it/@JamesPascual/ltccode-challenges-01chessboard
 
 #+begin_src js
 const drawRow = (pattern, maxLength, { lineEnding = '\n' } = {}) => pattern
