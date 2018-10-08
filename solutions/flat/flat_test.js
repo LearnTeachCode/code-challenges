@@ -1,15 +1,53 @@
-const test = require('ava')
-const { check, gen } = require('ava-check')
+//const test = require('ava')
+
+const _ = require('lodash')
+const jsc = require('jsverify')
 
 const { flatten,
         flatten_deep,
         flatten_deep_noloop,
         flatten_iter,
-        flatten_iter2 } = require('./flat')
+        flatten_iter2 } = require('../flat')
 
-// test('ava works', check(gen.array(gen.int), (t, arr) => {
-// 	t.deepEqual(flatten(arr), arr)
-// }))
+
+const arb_primitive = jsc.oneof(
+	jsc.char,
+	jsc.string,
+	jsc.bool,
+	jsc.integer,
+	jsc.number,
+	jsc.datetime,
+)
+
+const arb_nested_array = jsc.recursive(
+	jsc.array(
+		jsc.oneof(
+			arb_primitive,
+			jsc.dict,
+			jsc.json,
+			jsc.falsy)),
+	jsc.array)
+
+describe("flatten is idempotent on flat arrays", () => {
+	test('flatten is idempotent', () => {
+		jsc.assert(jsc.forall(
+			jsc.array(arb_primitive),
+			arr => expect(flatten(flatten(arr))).toEqual(flatten(arr))
+		))
+	})
+})
+
+test("add", () => {
+	expect(1 / 0).toBe(Infinity)
+})
+
+test(`flatten is _id_ on a flat array (does not change it)`, t => {
+	const result = jsc.checkForall(
+		jsc.array(arb_primitive),
+		arr => _.isEqual(flatten(arr), arr)
+	)
+	t.true(result)
+})
 
 function test_suite_shallow(flatten_func) {
 	test(`${flatten_func.name}, flat array returns flat`, t => {

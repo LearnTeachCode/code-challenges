@@ -1,0 +1,19 @@
+
+{
+  "name": "flat",
+  "version": "1.0.0",
+  "description": "",
+  "main": "flat.js",
+	"scripts": {
+		"test": "ava --verbose"
+	},
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "ava": "^0.25.0",
+    "ava-check": "^1.0.0-rc.0",
+    "jest": "^23.6.0",
+    "jsverify": "^0.8.3",
+    "testcheck": "^1.0.0-rc.2"
+  }
+}
