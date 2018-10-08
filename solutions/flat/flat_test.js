@@ -1,14 +1,12 @@
-//const test = require('ava')
-
-const _ = require('lodash')
+const test = require('ava')
 const jsc = require('jsverify')
+const _ = require('lodash')
 
 const { flatten,
         flatten_deep,
         flatten_deep_noloop,
         flatten_iter,
         flatten_iter2 } = require('../flat')
-
 
 const arb_primitive = jsc.oneof(
 	jsc.char,
@@ -19,6 +17,9 @@ const arb_primitive = jsc.oneof(
 	jsc.datetime,
 )
 
+const is_primitive = x => _.isString(x) | _.isBoolean(x) | _.isNumber(x) | _.isDate(x)
+const all_primitive = arr => arr.filter(is_primitive).length === arr.length
+
 const arb_nested_array = jsc.recursive(
 	jsc.array(
 		jsc.oneof(
@@ -28,53 +29,155 @@ const arb_nested_array = jsc.recursive(
 			jsc.falsy)),
 	jsc.array)
 
-describe("flatten is idempotent on flat arrays", () => {
-	test('flatten is idempotent', () => {
-		jsc.assert(jsc.forall(
-			jsc.array(arb_primitive),
-			arr => expect(flatten(flatten(arr))).toEqual(flatten(arr))
-		))
-	})
-})
+const n_nested_array = n =>
+      n === 0
+      ? jsc.oneof(arb_primitive)
+      : jsc.array(n_nested_array(n-1))
 
-test("add", () => {
-	expect(1 / 0).toBe(Infinity)
-})
+const arb_n_nested_array = jsc.nat.smap(n => n_nested_array(n),
+                                        n => n_nested_array(n-1))
 
-test(`flatten is _id_ on a flat array (does not change it)`, t => {
-	const result = jsc.checkForall(
-		jsc.array(arb_primitive),
-		arr => _.isEqual(flatten(arr), arr)
-	)
-	t.true(result)
-})
+const n_arb_nested_array = jsc.nat.smap(n => [ n,   n_nested_array(n)   ],
+                                        n => [ n-1, n_nested_array(n-1) ])
 
-function test_suite_shallow(flatten_func) {
-	test(`${flatten_func.name}, flat array returns flat`, t => {
+function check(property) {
+	return jsc.check(property, {quiet: true})
+}
+
+const env = {
+	primitive: arb_primitive
+}
+
+// tests for minimum basic flatten behavior
+function property_basic(f) {
+	property_flat(f)
+	property_nested1(f)
+}
+
+function property_flat(f) {
+	test(`${f.name}, flat array returns flat`, t => {
 		const input = [1, 2, 3, 4]
-		t.deepEqual(flatten_func(input), input)
-	});
+		t.true(_.isEqual(f(input), input))
+	})
 
-	test(`${flatten_func.name}, nested arrays return flat structure`, t => {
+	test(`${f.name}, id on flat array (does not change)`, t => {
+		const res = jsc.check(
+			jsc.forall(
+				'[primitive]', env,
+				arr => _.isEqual(f(arr), arr)),
+		    {quiet: true})
+		t.true(res)
+	})
+
+	test(`${f.name}, idempotent on flat arrays`, t => {
+		const res = check(
+			jsc.forall(
+				'[primitive]', env,
+				arr => _.isEqual(f(f(arr)), f(arr))))
+		t.true(res)
+	})
+}
+
+function property_nested1(f) {
+	test(`${f.name}, nested arrays return flat structure`, t => {
 		const input = [[1, 2], [3, 4]]
 		const expected = [1, 2, 3, 4]
-		t.deepEqual(flatten_func(input), expected)
+		t.true(_.isEqual(f(input), expected))
+	})
+
+	test(`${f.name}, flattened length is sum of inputs`, t => {
+		const res = check(
+			jsc.forall(
+				"[[primitive]]", env,
+				arrs => {
+					const nelem = sum(arrs.map(a => a.length))
+					return _.isEqual(f(arrs).length, nelem)
+				}))
+		t.true(res)
+	})
+
+	test(`${f.name}, flattened elements are same as inputs`, t => {
+		const res = jsc.check(
+			jsc.forall(
+				"[[primitive]]", env,
+				arrs => _.isEqual(new Set(f(arrs)),
+				                  set_union(...arrs))),
+			{quiet: true})
+		t.true(res)
 	})
 }
 
-function test_suite_deep(flatten_func) {
-	test(`${flatten_func.name}, deep nested arrays return flat`, t => {
-		const input = [[[1, 2], [3, 4]], [5, 6]]
-		const expected = [1, 2, 3, 4, 5, 6]
-		t.deepEqual(flatten_func(input), expected)
-	})
-
-	test(`${flatten_func.name}, heterogenous nesting levels flatten`, t => {
+function property_heterogenous(f) {
+	test(`${f.name}, heterogenous nesting levels flatten`, t => {
 		const input = [1, 2, [3, 4]]
 		const expected = [1, 2, 3, 4]
-		t.deepEqual(flatten_func(input), expected)
+		t.deepEqual(f(input), expected)
+	})
+
+	test(`${f.name}, heterogenous lengths is sum of inputs`, t => {
+		const res = jsc.check(
+			jsc.forall(
+				"[primitive]", "[[primitive]]", env,
+				(arr, arrs) => {
+					var nelem = arr.length + sum(arrs.map(a => a.length))
+					var shuffled = _.shuffle(arr.concat(arrs))
+					return f(shuffled).length === nelem
+				}),
+			{quiet: true})
+		t.true(res)
 	})
 }
+
+function property_deep(f) {
+	test(`${f.name}, deep nested arrays flatten`, t => {
+		const input = [[[1, 2], [3, 4]], [5, 6]]
+		const expected = [1, 2, 3, 4, 5, 6]
+		t.deepEqual(f(input), expected)
+	})
+
+	test(`${f.name}, deep nested arrays when flattened are all primitive`, t => {
+		const res = check(
+			jsc.forall(
+				jsc.recursive(jsc.array(arb_primitive), jsc.array),
+				arr => all_primitive(f(arr))))
+		t.true(res)
+	})
+}
+
+function property_depth(f) {
+	test(`${f.name}, depth`, t => {
+		const res = jsc.check(
+			jsc.forall(
+				n_arb_nested_array,
+				([n, arr]) => all_primitive(f(arr, depth=n))),
+			{quiet: true, size: 2})
+		t.true(res)
+	})
+}
+
+function run_tests() {
+	const tests = {
+		'basic': property_basic,
+		'heterogenous-levels': property_heterogenous,
+		'deep': property_deep,
+		'depth': property_depth,
+	}
+
+	const func_properties = new Map([
+		[flatten,
+		 ['basic', 'heterogenous-levels']],
+		[flatten_deep,
+		 ['basic', 'heterogenous-levels', 'deep', 'depth']],
+		[flatten_deep_noloop,
+		 ['basic', 'heterogenous-levels', 'deep']],
+	])
+
+	func_properties.forEach(function(props, func) {
+		props.forEach(prop => tests[prop](func))
+	})
+}
+
+run_tests()
 
 function test_suite_iterables(flatten_func) {
 	test(`${flatten_func.name}, flattens generators and arrays`, t => {
@@ -85,34 +188,25 @@ function test_suite_iterables(flatten_func) {
 
 		const input = [[1, 2], testGen()]
 		const expected = [1, 2, 3, 4]
-		t.deepEqual(flatten_func(input), expected)
+		expect(flatten_func(input)).toBe(expected)
 	})
 
 	test(`${flatten_func.name}, flattens Maps`, t => {
 		const input = [[1, 2], new Map([['a', 3], ['b', 4]])]
 		const expected = [1, 2, ['a', 3], ['b', 4]]
-		t.deepEqual(flatten_func(input, 1), expected)
+		expect(flatten_func(input, 1)).toBe(expected)
 	})
 }
 
-function flatten_iter_array(iterable, depth=Infinity) {
-	return [...flatten_iter(iterable, depth)]
+function set_union(...sets) {
+	var _union = new Set()
+	for (const set of sets) {
+		for (const elem of set)
+			_union.add(elem)
+	}
+	return _union
 }
 
-function flatten_iter2_array(iterable, depth=Infinity) {
-	return [...flatten_iter2(iterable, depth)]
+function sum(elems) {
+	return elems.reduce((a, b) => a + b, 0)
 }
-
-test_suite_shallow(flatten);
-test_suite_shallow(flatten_deep);
-test_suite_shallow(flatten_deep_noloop);
-test_suite_shallow(flatten_iter_array);
-test_suite_shallow(flatten_iter2_array);
-
-test_suite_deep(flatten_deep);
-test_suite_deep(flatten_deep_noloop);
-test_suite_deep(flatten_iter_array);
-test_suite_deep(flatten_iter2_array);
-
-test_suite_iterables(flatten_iter_array);
-test_suite_iterables(flatten_iter2_array);
