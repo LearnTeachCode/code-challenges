@@ -1,0 +1,22 @@
+* collapse intervals
+  Given a collection of intervals, return the minimal collection of
+  non-overlapping intervals that cover the same points.
+
+  Example:
+
+  : [[1, 3], [5, 8], [2, 5]]  --> [[1, 5], [5, 8]]
+
+  Assume the intervals are half-open =[a, b)=. That is, the
+  starting element is included, the ending element is /not/
+  included: =[1, 4) -> [1, 2, 3]=
+
+** Bonus implementation ideas:
+   1. Write versions for other interval types (open-open,
+      closed-closed, open-closed). If you have a preference, justify
+      it.
+   4. Write a data structure for a streaming version that takes one or
+      more intervals and updates the current set of minimal intervals.
+   5. Analyze the space/time complexity of your implementation.
+   6. /Note:/ I solved a very practical problem with this algorithm a
+      few weeks ago. Demonstrate (or describe) an application of your
+      function on a real "business" problem.

@@ -22,10 +22,12 @@
 
    - *Ask questions!* We aren't trying to be tricky, and a benefit of doing challenges in this venue is that we can talk things through. If the prompt isn't clear, or if you need a push in the right direction, feel free to ask. If you get stuck, post a partial solution and ask for help.
 
+   - Try a solution in the bare language first. If the language already implements an identical function, do it by hand. But then: production versions are also welcome, including use of standard library facilities and popular libraries. For instance, if in real life you would use one or two lodash functions in js, or pandas in python, that's an interesting angle to share.
 
 ** Challenge List
 
-| *>* | [[file:04_flat.org][flatten]]    |           | <2018-09-19 Wed> |
+| *>* | [[file:05_collapse.org][collapse]]   |           | <2018-10-22 Mon> |
+|   4 | [[file:04_flat.org][flatten]]    | [[file:solutions/04_flat.org][solutions]] | [2018-09-20 Thu] |
 |   3 | [[file:03_pairs.org][pair up]]    | [[file:solutions/03_pairs.org][solutions]] | [2018-09-07 Fri] |
 |   2 | [[file:02_zip.org][zip]]        | [[file:solutions/02_zip.org][solutions]] | [2018-08-17 Fri] |
 |   1 | [[file:01_chessboard.org][chessboard]] | [[file:solutions/01_chessboard.org][solutions]] | [2018-07-20 Fri] |
