@@ -82,3 +82,49 @@ function iterableToArray(iterable) {
   )
 }
 #+end_src
+
+** @solomon
+
+#+begin_src js
+const flatten = (arr) => {
+  return arr.reduce((a,b)=> a.concat(b));
+}
+#+end_src
+
+*** Haskell variations
+
+#+begin_src haskell
+(>>= id)
+#+end_src
+
+#+begin_src haskell
+concatMap id
+#+end_src
+
+#+begin_src haskell
+flatten :: [[a]] -> [a]
+flatten [] = []
+flatten (x:xs) = x ++ flatten xs
+
+flatten' :: [[a]] -> [a]
+flatten' = foldr (++) []
+#+end_src
+
+** @lou
+
+#+begin_src python
+def flatten(arr):
+  return reduce(lambda acc, el: acc + flatten(el) if isinstance(el, list) else acc + [el], arr, [])
+#+end_src
+
+** @matt_m
+
+#+begin_src python
+def flatten(l):
+    try:
+        iter(l)
+    except TypeError:
+        return [l]
+    else:
+        return sum((flatten(x) if x != l else [x] for x in l), [])
+#+end_src
