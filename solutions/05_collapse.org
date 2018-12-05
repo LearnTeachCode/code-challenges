@@ -4,13 +4,19 @@
 
 #+begin_src haskell
 
+module Collapse where
+import Data.List
+
 xs :: [(Int, Int)]
 xs = [(1,3),(5,8),(2,5)]
+
+xs' :: [(Int, Int)]
+xs' = [(0,3), (1,260), (2,259)]
 
 g :: [(Int, Int)] -> (Int, Int) -> [(Int, Int)]
 g a@((a1, a2):as) b@(b1, b2) =
     if (a2 - 1) >= b1
-    then as ++ [(a1,b2)]
+    then if a2 > b2 then a else [(a1,b2)] ++ as
     else a ++ [b]
 
 h :: [(Int, Int)] -> [(Int, Int)]
