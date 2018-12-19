@@ -1,21 +1,135 @@
 * Solutions for Collapsing Intervals
-
 ** @solomon
 
 #+begin_src haskell
+module Collapse where
+
+import Data.List
 
 xs :: [(Int, Int)]
 xs = [(1,3),(5,8),(2,5)]
 
+xs' :: [(Int, Int)]
+xs' = [(0,3), (1,260), (2,259)]
+
 g :: [(Int, Int)] -> (Int, Int) -> [(Int, Int)]
 g a@((a1, a2):as) b@(b1, b2) =
     if (a2 - 1) >= b1
-    then as ++ [(a1,b2)]
+    then if a2 > b2 then a else [(a1,b2)] ++ as
     else a ++ [b]
 
 h :: [(Int, Int)] -> [(Int, Int)]
 h [] = []
 h xs = foldl g [head ys] (tail ys)
     where ys = sort xs
+#+end_src
 
+** @matt_m
+
+#+begin_src python
+def collapse(intervals):
+    l = sorted(list(x) for x in  intervals)
+    results = [l[0]]
+    for item in l[1:]:
+        if item[0] < results[-1][1]:
+            results[-1][1] = max(item[1], results[-1][1])
+        else:
+            results.append(item)
+    return [tuple(x) for x in results]
+#+end_src
+
+** @jyamad
+*** test suite
+
+#+begin_src python
+import pytest
+
+import hypothesis as hyp
+import hypothesis.strategies as st
+
+
+@st.composite
+def st_intervals(draw, min_value=None, max_value=None):
+    lo = draw(st.integers(min_value, max_value))
+    hi = draw(st.integers(lo, max_value))
+    return (lo, hi)
+
+@st.composite
+def st_split_interval(draw, interval, overlap=False):
+    lo, hi = interval
+    if lo == hi:
+        raise ValueError('interval cannot be split')
+    elif overlap and hi - lo < 3:
+        raise ValueError('overlapping interval cannot be created')
+
+    if overlap:
+        mid1 = draw(st.integers(lo+2, hi-1))
+        mid2 = draw(st.integers(lo+1, mid1-1))
+    else:
+        mid1 = draw(st.integers(lo, hi))
+        mid2 = draw(st.integers(mid1, hi))
+    return [(lo, mid1), (mid2, hi)]
+
+@st.composite
+def st_split_interval_recur(draw, interval, overlap=False):
+    try:
+        lo, hi = draw(st.one_of(
+            st.just(interval),
+            st_split_interval(interval, overlap)))
+    except ValueError:
+        return [interval]
+
+    if not isinstance(lo, tuple):
+        return [interval]
+
+    lo = draw(st_split_interval_recur(lo, overlap))
+    hi = draw(st_split_interval_recur(hi, overlap))
+    return [*lo, *hi]
+
+
+@st.composite
+def st_collapsed_interval_test_pair(draw):
+    """
+    Generate a non-overlapping set of intervals and a derived overlapping set
+
+    The overlapping intervals are not sorted. The overlapping
+    intervals are derived from the non-overlapping intervals such that
+
+    Returns
+    -------
+    result: tuple of (non-overlapping list, overlapping list)
+
+    """
+    from random import shuffle
+    interval = draw(st_intervals())
+    nonoverlap = draw(st_split_interval_recur(interval))
+    nonoverlap = list(set(nonoverlap))
+
+    overlap = []
+    for ivl in nonoverlap:
+        o = draw(st_split_interval_recur(ivl, overlap=True))
+        overlap.extend(o)
+    shuffle(overlap)
+    return (nonoverlap, overlap)
+#+end_src
+
+*** solution and test
+
+#+begin_src python
+def collapse(intervals):
+    it = iter(sorted(intervals))
+    a = next(it)
+    for b in it:
+        if a[1] > b[0]:
+            a = (a[0], max(a[1], b[1]))
+        else:
+            yield a
+            a = b
+    yield a
+
+
+@hyp.given(st_collapsed_interval_test_pair())
+def test_collapse_pairs(pair):
+    nonoverlap, overlap = pair
+    assert set(collapse(overlap)) == set(nonoverlap)
 #+end_src

@@ -27,7 +27,7 @@
 ** Challenge List
 
 | *>* | [[file:06_frequentword.org][frequent word]] |           | <2018-12-18 Tue> |
-|   5 | [[file:05_collapse.org][collapse]]      |           | [2018-10-22 Mon] |
+|   5 | [[file:05_collapse.org][collapse]]      | [[file:solutions/05_collapse.org][solutions]] | [2018-10-22 Mon] |
 |   4 | [[file:04_flat.org][flatten]]       | [[file:solutions/04_flat.org][solutions]] | [2018-09-20 Thu] |
 |   3 | [[file:03_pairs.org][pair up]]       | [[file:solutions/03_pairs.org][solutions]] | [2018-09-07 Fri] |
 |   2 | [[file:02_zip.org][zip]]           | [[file:solutions/02_zip.org][solutions]] | [2018-08-17 Fri] |
