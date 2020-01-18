@@ -1,0 +1,32 @@
+* spiral matrix
+
+#+AUTHOR: @andrew
+
+  Given an integer =N=, create a matrix of size =N x N= whose values start at 1 and increment clockwise until value N².
+
+  Example:
+
+  Input: =4=
+
+  Output:
+
+  : [
+  :  [ 1,  2,  3, 4],
+  :  [12, 13, 14, 5],
+  :  [11, 16, 15, 6],
+  :  [10,  9,  8, 7]
+  : ]
+
+  Example 2:
+
+  Input: =2=
+  Output:
+
+  : [
+  :  [1, 2],
+  :  [4, 3]
+  : ]
+
+** Bonus
+
+   State your time complexity and your space complexity.
