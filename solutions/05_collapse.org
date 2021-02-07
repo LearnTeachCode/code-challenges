@@ -6,6 +6,9 @@ module Collapse where
 
 import Data.List
 
+module Collapse where
+import Data.List
+
 xs :: [(Int, Int)]
 xs = [(1,3),(5,8),(2,5)]
 
